@@ -14,6 +14,7 @@
  * 2 - To achieve the low-side
  *     slow decay at every off portion of the PWM cycle, it is needed
  *     to switch the low side, and maintain the high side always on.
+ * 3 - The nSLEEP pin is low by default, according to datasheet information.
  * 
  * Thigs to improve:
  * 1 - Use a structure that can store all the variables for the BDC,
@@ -77,6 +78,9 @@ uint8_t drv8701p_set_command(drv8701p_direction_t command, uint16_t speed)
             // Set IN1 to max PWM (high side)
             hal_aio_set_output(HAL_AIO_IN1, DRV8701P_PWM_MAX);
 
+            // Take out from sleep mode
+            hal_aio_set_output(HAL_AIO_nSLEEP, DRV8701P_PWM_MAX);
+
             // Switch IN2 for PWM (low side)
             drv8701p_switching_output = HAL_AIO_IN2;
 
@@ -86,6 +90,9 @@ uint8_t drv8701p_set_command(drv8701p_direction_t command, uint16_t speed)
         {
             // Set IN2 to max PWM (high side)
             hal_aio_set_output(HAL_AIO_IN2, DRV8701P_PWM_MAX);
+
+            // Take out from sleep mode
+            hal_aio_set_output(HAL_AIO_nSLEEP, DRV8701P_PWM_MAX);
 
             // Switch IN1 for PWM (low side)
             drv8701p_switching_output = HAL_AIO_IN1;
